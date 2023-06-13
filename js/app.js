@@ -1,3 +1,4 @@
+// Made By DveX
 let Wheel = null;
 const SegmentsList = [];
 const Formatter = new Intl.NumberFormat('en-US', {
