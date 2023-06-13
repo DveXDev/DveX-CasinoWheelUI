@@ -6,12 +6,7 @@ const Formatter = new Intl.NumberFormat('en-US', {
     minimumFractionDigits: 0,
     maximumFractionDigits: 0,
 });
-// let segColor = "#000";
 
-// function addSegment(text, segColorOverride = '#000', textFillStyle = '#000') {
-//     segColor = segColorOverride ? segColorOverride : segColor === '#FFF' ? '#000' : '#FFF';
-//     SegmentsList.push({ fillStyle: segColor, text, textFillStyle });
-// }
 
 function CreateWheel() {
     Wheel = new Winwheel({
@@ -50,21 +45,7 @@ window.addEventListener("DOMContentLoaded", (Event) => {
 window.addEventListener("message", function (Event) {
     let Data = Event.data;
     let Action = Data.Action;
-    if (Action == 'CreateWheel') {
-        // Create Segments
-        for (let SlotId = 0; SlotId < Data.Slots.length; SlotId++) {
-            const Slot = Data.Slots[SlotId];
-            if (SlotId == Data.Slots.length - 1) { // Last Slot = Car
-                AddSegment(Slot['Model'].toUpperCase(), Slot['Colour']);
-            } else if (SlotId % 2 === 0) { // Even
-                AddSegment(Formatter.format(Slot['Amount']), Slot['Colour'], "#000");
-            } else if (SlotId % 2 !== 0) { // Odd
-                AddSegment(Formatter.format(Slot['Amount']), Slot['Colour']);
-            }
-        }
-        // Create Wheel
-        CreateWheel();
-    } else if (Action == 'DoWheel') {
+    if (Action == 'DoWheel') {
         CalculatePrize(Data.Slot, Data.Speed);
     }
 });
