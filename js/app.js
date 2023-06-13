@@ -6,12 +6,12 @@ const Formatter = new Intl.NumberFormat('en-US', {
     minimumFractionDigits: 0,
     maximumFractionDigits: 0,
 });
-let segColor = "#000";
+// let segColor = "#000";
 
-function addSegment(text, segColorOverride = '#000', textFillStyle = '#000') {
-    segColor = segColorOverride ? segColorOverride : segColor === '#FFF' ? '#000' : '#FFF';
-    SegmentsList.push({ fillStyle: segColor, text, textFillStyle });
-}
+// function addSegment(text, segColorOverride = '#000', textFillStyle = '#000') {
+//     segColor = segColorOverride ? segColorOverride : segColor === '#FFF' ? '#000' : '#FFF';
+//     SegmentsList.push({ fillStyle: segColor, text, textFillStyle });
+// }
 
 function CreateWheel() {
     Wheel = new Winwheel({
@@ -50,11 +50,31 @@ window.addEventListener("DOMContentLoaded", (Event) => {
 window.addEventListener("message", function (Event) {
     let Data = Event.data;
     let Action = Data.Action;
-    if (Action == 'DoWheel') {
+    if (Action == 'CreateWheel') {
+        // Create Segments
+        for (let SlotId = 0; SlotId < Data.Slots.length; SlotId++) {
+            const Slot = Data.Slots[SlotId];
+            if (SlotId == Data.Slots.length - 1) { // Last Slot = Car
+                AddSegment(Slot['Model'].toUpperCase(), Slot['Colour']);
+            } else if (SlotId % 2 === 0) { // Even
+                AddSegment(Formatter.format(Slot['Amount']), Slot['Colour'], "#000");
+            } else if (SlotId % 2 !== 0) { // Odd
+                AddSegment(Formatter.format(Slot['Amount']), Slot['Colour']);
+            }
+        }
+        // Create Wheel
+        CreateWheel();
+    } else if (Action == 'DoWheel') {
         CalculatePrize(Data.Slot, Data.Speed);
     }
 });
 
+const segments = [];
+let segColor = '#000';
+const addSegment = (text, segColorOverride = '#000', textFillStyle = '#000') => {
+  segColor = segColorOverride ? segColorOverride : segColor === '#FFF' ? '#000' : '#FFF';
+  segments.push({ fillStyle: segColor, text, textFillStyle });
+}
 // 0
 addSegment('LOSE', '#000', '#000');
 // 1
@@ -103,3 +123,44 @@ addSegment('$1,000', '#F2ED52');
 addSegment('LOSE', '#000', '#000');
 // 23
 addSegment('GT86', '#FF0221');
+let theWheel = null;
+const createWheel = () => {
+  theWheel = new Winwheel({
+    'numSegments'  : segments.length,         // Number of segments
+    'outerRadius'  : 512,       // The size of the wheel.
+    'centerX'      : 512,       // Used to position on the background correctly.
+    'centerY'      : 512,
+    'textFontSize' : 28,        // Font size.
+    'segments'     : segments,
+    'rotationAngle': ((segments.length - 2) * (360 / segments.length)),
+    'animation' :               // Definition of the animation
+    {
+      'type'     : 'spinToStop',
+      'duration' : 15,
+      'spins'    : 2,
+      'callbackFinished' : () => {},
+    }
+  });
+}
+createWheel();
+const calculatePrize = (stopAtIdx, duration) => {
+  theWheel.animation.duration = duration || 15;
+  // This formula always makes the wheel stop somewhere inside prize 3 at least
+  // 1 degree away from the start and end edges of the segment.
+  const idx = (stopAtIdx * (360 / segments.length));
+  //        let stopAt = (idx + Math.floor((Math.random() * ((360 / segments.length) - 2))));
+
+  const stopAt = idx + ((360 / segments.length) / 2) + 1;
+  theWheel.rotationAngle = 0;
+  // Important thing is to set the stopAngle of the animation before stating the spin.
+  theWheel.animation.stopAngle = stopAt;
+  theWheel.animation.spins = Math.floor(Math.random() * (4 - 2 + 1) + 2);
+  // May as well start the spin from here.
+  theWheel.startAnimation();
+}
+// setTimeout(() => {
+//   calculatePrize(1, 3);
+// }, 1000);
+// setTimeout(() => {
+//   calculatePrize(1, 15);
+// }, 5000);
