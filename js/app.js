@@ -50,21 +50,56 @@ window.addEventListener("DOMContentLoaded", (Event) => {
 window.addEventListener("message", function (Event) {
     let Data = Event.data;
     let Action = Data.Action;
-    if (Action == 'CreateWheel') {
-        // Create Segments
-        for (let SlotId = 0; SlotId < Data.Slots.length; SlotId++) {
-            const Slot = Data.Slots[SlotId];
-            if (SlotId == Data.Slots.length - 1) { // Last Slot = Car
-                AddSegment(Slot['Model'].toUpperCase(), Slot['Colour']);
-            } else if (SlotId % 2 === 0) { // Even
-                AddSegment(Formatter.format(Slot['Amount']), Slot['Colour'], "#000");
-            } else if (SlotId % 2 !== 0) { // Odd
-                AddSegment(Formatter.format(Slot['Amount']), Slot['Colour']);
-            }
-        }
-        // Create Wheel
-        CreateWheel();
-    } else if (Action == 'DoWheel') {
+    if (Action == 'DoWheel') {
         CalculatePrize(Data.Slot, Data.Speed);
     }
 });
+
+// 0
+addSegment('LOSE', '#000', '#000');
+// 1
+addSegment('$1,000', '#F2ED52');
+// 2
+addSegment('LOSE', '#000', '#000');
+// 3
+addSegment('$5,000', '#526FF2');
+// 4
+addSegment('LOSE', '#000', '#000');
+// 5
+addSegment('$2,000','#F2ED52');
+// 6
+addSegment('LOSE', '#000', '#000');
+// 7
+addSegment('$10,000', '#526FF2');
+// 8
+addSegment('LOSE', '#000', '#000');
+// 9
+addSegment('$1,000', '#F2ED52');
+// 10
+addSegment('LOSE', '#000', '#000');
+// 11
+addSegment('$1,000', '#F2ED52');
+// 12
+addSegment('LOSE', '#000', '#000');
+// 13
+addSegment('$2,000', '#F2ED52');
+// 14
+addSegment('LOSE', '#000', '#000');
+// 15
+addSegment('$20,000', '#E852F2');
+// 16
+addSegment('LOSE', '#000', '#000');
+// 17
+addSegment('$1,000', '#F2ED52');
+// 18
+addSegment('LOSE', '#000', '#000');
+// 19
+addSegment('$50,000','#E852F2');
+// 20
+addSegment('LOSE', '#000', '#000');
+// 21
+addSegment('$1,000', '#F2ED52');
+// 22
+addSegment('LOSE', '#000', '#000');
+// 23
+addSegment('GT86', '#FF0221');
