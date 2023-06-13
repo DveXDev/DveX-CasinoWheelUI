@@ -8,7 +8,7 @@ const Formatter = new Intl.NumberFormat('en-US', {
 });
 let segColor = "#000";
 
-function AddSegment(text, segColorOverride = '#000', textFillStyle = '#000') {
+function addSegment(text, segColorOverride = '#000', textFillStyle = '#000') {
     segColor = segColorOverride ? segColorOverride : segColor === '#FFF' ? '#000' : '#FFF';
     SegmentsList.push({ fillStyle: segColor, text, textFillStyle });
 }
