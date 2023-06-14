@@ -2133,7 +2133,7 @@ function PointerGuide(options)
 // ====================================================================================================================
 // This function takes the percent 0-100 and returns the number of degrees 0-360 this equates to.
 // ====================================================================================================================
-function winwheelPercentToDegrees(percentValue) // Smelly Boy 2
+function winwheelPercentToDegrees(percentValue)
 {
     let degrees = 0;
 

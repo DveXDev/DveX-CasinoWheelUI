@@ -28,16 +28,7 @@ function CreateWheel() {
     });
 };
 
-function CalculatePrize(Slot, Duration) {
-    if (!Wheel) return console.log("Wheel not found..");
-    Wheel.animation.duration = Duration || 15;
-    const IDx = (Slot * (360 / SegmentsList.length));
-    const StopAt = IDx + ((360 / SegmentsList.length) / 2) + 1;
-    Wheel.rotationAngle = 0;
-    Wheel.animation.stopAngle = StopAt;
-    Wheel.animation.spins = Math.floor(Math.random() * (4 - 2 + 1) + 2);
-    Wheel.startAnimation();
-};
+
 
 window.addEventListener("DOMContentLoaded", (Event) => {
     gsap.registerPlugin();
@@ -47,7 +38,7 @@ window.addEventListener("message", function (Event) {
     let Data = Event.data;
     let Action = Data.Action;
     if (Action == 'DoWheel') {
-        CalculatePrize(Data.Slot, Data.Speed);
+      calculatePrize(Data.Slot, Data.Speed);
     }
 });
 
