@@ -28,6 +28,21 @@ function CreateWheel() {
     });
 };
 
+const calculatePrize = (stopAtIdx, duration) => {
+  theWheel.animation.duration = duration || 15;
+  // This formula always makes the wheel stop somewhere inside prize 3 at least
+  // 1 degree away from the start and end edges of the segment.
+  const idx = (stopAtIdx * (360 / segments.length));
+  //        let stopAt = (idx + Math.floor((Math.random() * ((360 / segments.length) - 2))));
+
+  const stopAt = idx + ((360 / segments.length) / 2) + 1;
+  theWheel.rotationAngle = 0;
+  // Important thing is to set the stopAngle of the animation before stating the spin.
+  theWheel.animation.stopAngle = stopAt;
+  theWheel.animation.spins = Math.floor(Math.random() * (4 - 2 + 1) + 2);
+  // May as well start the spin from here.
+  theWheel.startAnimation();
+}
 
 
 window.addEventListener("DOMContentLoaded", (Event) => {
@@ -116,21 +131,6 @@ const createWheel = () => {
   });
 }
 createWheel();
-const calculatePrize = (stopAtIdx, duration) => {
-  theWheel.animation.duration = duration || 15;
-  // This formula always makes the wheel stop somewhere inside prize 3 at least
-  // 1 degree away from the start and end edges of the segment.
-  const idx = (stopAtIdx * (360 / segments.length));
-  //        let stopAt = (idx + Math.floor((Math.random() * ((360 / segments.length) - 2))));
-
-  const stopAt = idx + ((360 / segments.length) / 2) + 1;
-  theWheel.rotationAngle = 0;
-  // Important thing is to set the stopAngle of the animation before stating the spin.
-  theWheel.animation.stopAngle = stopAt;
-  theWheel.animation.spins = Math.floor(Math.random() * (4 - 2 + 1) + 2);
-  // May as well start the spin from here.
-  theWheel.startAnimation();
-}
 // setTimeout(() => {
 //   calculatePrize(1, 3);
 // }, 1000);
